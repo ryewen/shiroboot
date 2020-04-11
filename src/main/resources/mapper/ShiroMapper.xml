@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.loststars.shiroboot.dao.ShiroDAO">
+    <select id="getUser" resultType="com.loststars.shiroboot.model.User" parameterType="java.lang.String">
+        SELECT name, password, salt FROM user WHERE name=#{name}
+    </select>
+    
+    <select id="listRoles" resultType="java.lang.String" parameterType="java.lang.String">
+         select r.name from user u left join user_role ur on u.id=ur.uid left join role r on ur.rid=r.id where u.name=#{name}
+    </select>
+    
+    <select id="listPermissions" resultType="java.lang.String" parameterType="java.lang.String">
+         select p.name from user u left join user_role ur on u.id=ur.uid left join role r on ur.rid=r.id left join role_permission rp on r.id=rp.rid left join permission p on p.id=rp.pid where u.name=#{name}
+    </select>
+    
+    <select id="listAllPermissions" resultType="java.lang.String">
+        select name from permission;
+    </select>
+    
+    <insert id="addUser" parameterType="com.loststars.shiroboot.model.User" keyProperty="id" useGeneratedKeys="true">
+        insert into user (name, password, salt) values (#{name}, #{password}, #{salt})
+    </insert>
+</mapper>
